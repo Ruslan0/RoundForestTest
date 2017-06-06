@@ -1,5 +1,9 @@
 package by.roundforest.impl;
 
+import by.roundforest.dto.ViewBean;
+import by.roundforest.dto.WordBean;
+import by.roundforest.service.Reviews;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -16,38 +20,37 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
 
 
-import by.roundforest.dto.ViewBean;
-import by.roundforest.dto.WordBean;
-import by.roundforest.service.Reviews;
 
-public class ReviewsImpl implements Reviews{
+public class ReviewsImpl implements Reviews {
 
-    private final String sqlActiveUsers = "select UserId, profileName, count(*) count from Reviews group by UserId order by 3 desc limit ?";
-    private final String sqlCommentedFoodItems = "select ProductId, count(*) count from Reviews group by ProductId order by 2 desc limit ?";
-    private final String sqlAll = "select Text from Reviews";
-    private static JdbcTemplate jdbcTemplate = (JdbcTemplate )new ClassPathXmlApplicationContext("Beans.xml").getBean("jdbcTemplate");
+  private final String sqlActiveUsers = 
+      "select UserId, profileName, count(*) count from Reviews group by UserId order by 3 desc limit ?";
+  private final String sqlCommentedFoodItems =
+      "select ProductId, count(*) count from Reviews group by ProductId order by 2 desc limit ?";
+  private final String sqlAll = "select Text from Reviews";
+  private static JdbcTemplate jdbcTemplate = (JdbcTemplate)
+      new ClassPathXmlApplicationContext("Beans.xml").getBean("jdbcTemplate");
     
     
-    public void getReviews(){
-	      
-	      List<ViewBean> views=getActiveUsers(1000);
-	      views.forEach((k)->System.out.println(k.getProfileName()));
-
-	      views=getCommentedFoodItems(1000);
-	      views.forEach((k)->System.out.println(k.getProductId()));
-	      
-		  List <WordBean> wordsSort=getMostUsedWords(1000);
-		  wordsSort.forEach((k)->System.out.println(k.getWord()+" "+k.getWeight()));
-
-    }
+  public void getReviews(){
     
+    List<ViewBean> views = getActiveUsers(1000);
+    views.forEach((k) -> System.out.println(k.getProfileName()));
 
-	@Override
-	public List<ViewBean> getActiveUsers(int count) {
-		return jdbcTemplate.query(sqlActiveUsers,
-				new Object[] {count},
-				new BeanPropertyRowMapper<ViewBean>(ViewBean.class));
-	}
+    views = getCommentedFoodItems(1000);
+    views.forEach((k) -> System.out.println(k.getProductId()));
+    
+    List<WordBean> wordsSort = getMostUsedWords(1000);
+    wordsSort.forEach((k) -> System.out.println(k.getWord() + " " + k.getWeight()));
+
+  }
+
+  @Override
+  public List<ViewBean> getActiveUsers(int count) {
+    return jdbcTemplate.query(sqlActiveUsers,
+       new Object[] {count},
+       new BeanPropertyRowMapper<ViewBean>(ViewBean.class));
+  }
 
 	@Override
 	public List<ViewBean> getCommentedFoodItems(int count) {
