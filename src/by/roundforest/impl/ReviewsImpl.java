@@ -29,7 +29,9 @@ public class ReviewsImpl implements Reviews {
   private static JdbcTemplate jdbcTemplate = (JdbcTemplate)
       new ClassPathXmlApplicationContext("Beans.xml").getBean("jdbcTemplate");
     
-    
+  /**
+   *  Returns all reviews.
+   */  
   public void getReviews(){
     
     List<ViewBean> views = getActiveUsers(1000);
