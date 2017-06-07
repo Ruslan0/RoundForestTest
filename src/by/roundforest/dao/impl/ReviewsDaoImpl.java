@@ -1,9 +1,5 @@
 package by.roundforest.dao.impl;
 
-import by.roundforest.dao.ReviewsDao;
-import by.roundforest.dto.ViewBean;
-import by.roundforest.dto.WordBean;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -14,12 +10,15 @@ import java.util.List;
 import java.util.TreeSet;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.stereotype.Component;
+
+import by.roundforest.dao.ReviewsDao;
+import by.roundforest.dto.ViewBean;
+import by.roundforest.dto.WordBean;
 
 
 
@@ -78,7 +77,8 @@ public class ReviewsDaoImpl implements ReviewsDao {
         });
     List<WordBean> wordsSort = new ArrayList(Arrays.asList(wordsSet.stream().toArray()));
     Collections.sort(wordsSort, compWeight);
-
-    return wordsSort.subList(0, count);
+    List<WordBean> words =wordsSort.subList(0, count);
+    Collections.sort(words, comp);
+    return words;
   }
 }
