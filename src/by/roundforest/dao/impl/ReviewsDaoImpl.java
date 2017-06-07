@@ -1,8 +1,8 @@
-package by.roundforest.impl;
+package by.roundforest.dao.impl;
 
+import by.roundforest.dao.ReviewsDao;
 import by.roundforest.dto.ViewBean;
 import by.roundforest.dto.WordBean;
-import by.roundforest.service.Reviews;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -18,10 +18,12 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
+import org.springframework.stereotype.Component;
 
 
 
-public class ReviewsImpl implements Reviews {
+@Component
+public class ReviewsDaoImpl implements ReviewsDao {
 
   private final String sqlActiveUsers =  "select UserId, profileName, count(*) count from Reviews group by UserId order by 3 desc limit ?";
   private final String sqlCommentedFoodItems = "select ProductId, count(*) count from Reviews group by ProductId order by 2 desc limit ?";
@@ -30,21 +32,8 @@ public class ReviewsImpl implements Reviews {
       new ClassPathXmlApplicationContext("Beans.xml").getBean("jdbcTemplate");
     
   /**
-   *  Returns all reviews.
+   *  Finding count most active users (profile names)
    */  
-  public void getReviews(){
-    
-    List<ViewBean> views = getActiveUsers(1000);
-    views.forEach((k) -> System.out.println(k.getProfileName()));
-
-    views = getCommentedFoodItems(1000);
-    views.forEach((k) -> System.out.println(k.getProductId()));
-    
-    List<WordBean> wordsSort = getMostUsedWords(1000);
-    wordsSort.forEach((k) -> System.out.println(k.getWord() + " " + k.getWeight()));
-
-  }
-
   @Override
   public List<ViewBean> getActiveUsers(int count) {
     return jdbcTemplate.query(sqlActiveUsers,
@@ -52,13 +41,19 @@ public class ReviewsImpl implements Reviews {
        new BeanPropertyRowMapper<ViewBean>(ViewBean.class));
   }
 
+  /**
+   *  Finding count most commented food items (item ids).
+   */  
   @Override
   public List<ViewBean> getCommentedFoodItems(int count) {
     return jdbcTemplate.query(sqlCommentedFoodItems,
       new Object[] {count},
       new BeanPropertyRowMapper<ViewBean>(ViewBean.class));
   }
-
+  
+  /**
+   *  Finding count most used words in the reviews.
+   */  
   @Override
   public List<WordBean> getMostUsedWords(int count) {
 
@@ -84,9 +79,4 @@ public class ReviewsImpl implements Reviews {
 
     return wordsSort.subList(0, count);
   }
-
-  public static void main(String[] args) {
-    new ReviewsImpl().getReviews();
-  }
-
 }

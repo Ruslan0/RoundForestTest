@@ -1,11 +1,11 @@
-package by.roundforest.service;
+package by.roundforest.dao;
 
 import java.util.List;
 
 import by.roundforest.dto.ViewBean;
 import by.roundforest.dto.WordBean;
 
-public interface Reviews {
+public interface ReviewsDao {
   
   List<ViewBean> getActiveUsers(int count);
   
