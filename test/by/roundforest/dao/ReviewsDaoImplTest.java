@@ -24,21 +24,6 @@ public class ReviewsDaoImplTest {
 	private ReviewsDao dao;
 	
 	@Test
-	public void testGetReviews() {
-	    List<ViewBean> views = dao.getActiveUsers(1000);
-        assertNotNull(views);
-	    views.forEach((k) -> System.out.println(k.getProfileName()));
-
-	    views = dao.getCommentedFoodItems(1000);
-        assertNotNull(views);
-	    views.forEach((k) -> System.out.println(k.getProductId()));
-	    
-	    List<WordBean> wordsSort = dao.getMostUsedWords(1000);
-        assertNotNull(wordsSort);
-	    wordsSort.forEach((k) -> System.out.println(k.getWord() + " " + k.getWeight()));
-	}
-
-	@Test
 	public void testGetActiveUsers() {
 	    List<ViewBean> views = dao.getActiveUsers(1000);
         assertNotNull(views);

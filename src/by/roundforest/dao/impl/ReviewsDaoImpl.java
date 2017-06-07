@@ -79,6 +79,7 @@ public class ReviewsDaoImpl implements ReviewsDao {
     Collections.sort(wordsSort, compWeight);
     List<WordBean> words =wordsSort.subList(0, count);
     Collections.sort(words, comp);
+    Collections.reverse(words);
     return words;
   }
 }
