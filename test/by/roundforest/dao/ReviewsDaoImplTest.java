@@ -17,17 +17,12 @@ import by.roundforest.dto.ViewBean;
 import by.roundforest.dto.WordBean;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath:Beans.xml")
+@ContextConfiguration("classpath:applicationContext.xml")
 public class ReviewsDaoImplTest {
 
 	@Autowired
 	private ReviewsDao dao;
 	
-/*	@Before
-	public void setUp(){
-		dao = new ReviewsDaoImpl();
-	}
-*/	
 	@Test
 	public void testGetReviews() {
 	    List<ViewBean> views = dao.getActiveUsers(1000);

@@ -13,6 +13,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.TreeSet;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -28,8 +29,9 @@ public class ReviewsDaoImpl implements ReviewsDao {
   private final String sqlActiveUsers =  "select UserId, profileName, count(*) count from Reviews group by UserId order by 3 desc limit ?";
   private final String sqlCommentedFoodItems = "select ProductId, count(*) count from Reviews group by ProductId order by 2 desc limit ?";
   private final String sqlAll = "select Text from Reviews";
-  private static JdbcTemplate jdbcTemplate = (JdbcTemplate)
-      new ClassPathXmlApplicationContext("Beans.xml").getBean("jdbcTemplate");
+
+  @Autowired
+  JdbcTemplate jdbcTemplate;
     
   /**
    *  Finding count most active users (profile names)
